@@ -22,9 +22,8 @@ typedef struct Livre {
 
 tlivre biblio[100];
 int nbLivres = 0;
-int prochainID = 1;
 
-// Variables de saisie GUI
+// Variables de saisie graph
 char txtTitre[50] = "";
 char txtAuteur[50] = "";
 char txtAnnee[10] = "";
@@ -39,11 +38,11 @@ bool editRecherche = false;
 // État de l'application (Initialisé au Menu)
 int currentScreen = SCREEN_MENU;
 
-// Fonctions de données
+// Fonctions de données simplifiées
 void Sauvegarder() {
     FILE *f = fopen("bibliotheque.txt", "w");
     if (f) {
-        fprintf(f, "%d %d\n", prochainID, nbLivres);
+        fprintf(f, "%d\n", nbLivres);
         for (int i = 0; i < nbLivres; i++) {
             fprintf(f, "%d|%s|%s|%d|%d\n", 
                     biblio[i].id, biblio[i].titre, biblio[i].auteur, biblio[i].annee, biblio[i].disponible);
@@ -57,7 +56,7 @@ void Charger() {
     if (f) {
         char ligne[256];
         if (fgets(ligne, sizeof(ligne), f)) {
-            sscanf(ligne, "%d %d", &prochainID, &nbLivres);
+            sscanf(ligne, "%d", &nbLivres);
         }
         if (nbLivres > 100) nbLivres = 100;
 
@@ -72,16 +71,20 @@ void Charger() {
     }
 }
 
-// Fonction de suppression de livre
 void SupprimerLivre(int index) {
-    if (index >= 0 && index < nbLivres) {
-        // On décale les livres pour boucher le trou
+        // Décalage pour combler le vide
         for (int i = index; i < nbLivres - 1; i++) {
             biblio[i] = biblio[i + 1];
         }
-        nbLivres--; // Un livre en moins
+        
+        // On diminue le nombre de livres total
+        nbLivres--; 
+        
+        // reassigne les numéros de 1 à N
+        for (int i = 0; i < nbLivres; i++) {
+            biblio[i].id = i + 1; 
+        }
     }
-}
 
 // ----------------------------------------------------------------------------------
 int main() {
@@ -119,12 +122,9 @@ int main() {
             for (int i = 0; i < nbLivres; i++) {
                 bool correspond = false;
                 
-                // RECHERCHE SIMPLIFIÉE :
-                // Si la recherche est vide -> On affiche tout
                 if (strlen(txtRecherche) == 0) {
                     correspond = true; 
                 } 
-                // Sinon, on compare le titre avec strcmp (Renvoie 0 si c'est identique)
                 else if (strcmp(biblio[i].titre, txtRecherche) == 0) {
                     correspond = true;
                 }
@@ -149,7 +149,7 @@ int main() {
                         // Bouton Supprimer
                         if (GuiButton((Rectangle){ 840, yPos, 80, 25 }, "Suppr.")) {
                             SupprimerLivre(i);
-                            i--; // On recule l'index car le tableau a été décalé
+                            i--; // On recule l'index car le tableau vient de bouger
                         }
                         
                         ligneAffichees++;
@@ -192,7 +192,9 @@ int main() {
 
             if (GuiButton((Rectangle){ 350, 380, 140, 40 }, "Valider")) {
                 if (nbLivres < 100 && strlen(txtTitre) > 0) {
-                    biblio[nbLivres].id = prochainID++;          
+                    // Logique simplifiée : le nouvel ID correspond au (nombre actuel de livres + 1)
+                    biblio[nbLivres].id = nbLivres + 1;          
+                    
                     strcpy(biblio[nbLivres].titre, txtTitre);    
                     strcpy(biblio[nbLivres].auteur, txtAuteur);  
                     biblio[nbLivres].annee = atoi(txtAnnee);      
