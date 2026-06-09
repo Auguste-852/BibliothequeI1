@@ -121,10 +121,10 @@ int main() {
             for (int i = 0; i < nbLivres; i++) {
                 bool correspond = false;
                 
-                if (strlen(txtRecherche) == 0) {
+                if (strlen(txtRecherche) == 0) {//si barre de recherche vide
                     correspond = true; 
                 } 
-                else if (strcmp(biblio[i].titre, txtRecherche) == 0) {
+                else if (strcmp(biblio[i].titre, txtRecherche) == 0) {//si titre correspond a recherche
                     correspond = true;
                 }
 
