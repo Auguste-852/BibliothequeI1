@@ -6,12 +6,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-//CONFIGURATION DES ÉCRANS
+//configuration des ecrans
 #define SCREEN_MENU  0
 #define SCREEN_LISTE 1
 #define SCREEN_AJOUT 2
 
-// STRUCTURE BIBLIOTHÈQUE
+// structure bibliotheque
 typedef struct Livre {
     int id;
     char titre[50];
@@ -79,7 +79,7 @@ void SupprimerLivre(int index) {
         // On diminue le nombre de livres total
         nbLivres--; 
         
-        // reassigne les numéros de 1 à N
+        // reassigne les numéros de 1 à n
         for (int i = 0; i < nbLivres; i++) {
             biblio[i].id = i + 1; 
         }
@@ -99,7 +99,7 @@ int main() {
         GuiLabel((Rectangle){ 400, 20, 200, 40 }, "#102# GESTION BIBLIOTHEQUE");
 
         if (currentScreen == SCREEN_MENU) {
-            // MENU PRINCIPAL
+            // menu principal avec changement page
             if (GuiButton((Rectangle){ 400, 150, 200, 40 }, "#019# Afficher/Gerer Livres")) currentScreen = SCREEN_LISTE;
             if (GuiButton((Rectangle){ 400, 210, 200, 40 }, "#033# Ajouter un Livre")) currentScreen = SCREEN_AJOUT;
             if (GuiButton((Rectangle){ 400, 270, 200, 40 }, "#002# Sauvegarder")) Sauvegarder();
@@ -107,7 +107,7 @@ int main() {
         } 
         
         else if (currentScreen == SCREEN_LISTE) {
-            // ÉCRAN LISTE RECHERCHE SUPPRESSION
+            // ECRAN LISTE RECHERCHE SUPPRESSION
             GuiGroupBox((Rectangle){ 50, 80, 900, 500 }, "Gestion de la liste");
             
             // Barre de recherche
@@ -140,9 +140,9 @@ int main() {
                                     biblio[i].id, biblio[i].titre, biblio[i].auteur, biblio[i].annee, statut), 
                                     70, yPos + 2, 18, DARKGRAY);
                         
-                        // Bouton Prêter / Rendre
-                        if (GuiButton((Rectangle){ 720, yPos, 100, 25 }, biblio[i].disponible ? "Preter" : "Rendre")) {
-                            biblio[i].disponible = !biblio[i].disponible;
+                        // Bouton Preter / Rendre
+                        if (GuiButton((Rectangle){ 720, yPos, 100, 25 }, biblio[i].disponible ? "Preter" : "Rendre")) { //condition si vraie alors preter sinon rendre
+                            biblio[i].disponible = !biblio[i].disponible;//  inverse l'tat de la valeur
                         }
                         
                         // Bouton Supprimer
@@ -191,7 +191,7 @@ int main() {
 
             if (GuiButton((Rectangle){ 350, 380, 140, 40 }, "Valider")) {
                 if (nbLivres < 100 && strlen(txtTitre) > 0) {
-                    // Logique simplifiée : le nouvel ID correspond au nombre actuel de livres + 1
+                    //le nouvel ID correspond au nombre actuel de livres + 1
                     biblio[nbLivres].id = nbLivres + 1;          
                     
                     strcpy(biblio[nbLivres].titre, txtTitre);    
