@@ -4,9 +4,9 @@
 #include "raygui.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h> // Pour atoi
+#include <stdlib.h>
 
-// --- CONFIGURATION DES ÉCRANS (Sans enum) ---
+//CONFIGURATION DES ÉCRANS
 #define SCREEN_MENU  0
 #define SCREEN_LISTE 1
 #define SCREEN_AJOUT 2
@@ -31,16 +31,15 @@ bool editTitre = false;
 bool editAuteur = false;
 bool editAnnee = false;
 
-// Variables de recherche simplifiée
+// Variables de recherche
 char txtRecherche[50] = "";
 bool editRecherche = false;
 
 // État de l'application (Initialisé au Menu)
 int currentScreen = SCREEN_MENU;
 
-// Fonctions de données simplifiées
 void Sauvegarder() {
-    FILE *f = fopen("bibliotheque.txt", "w");
+    FILE *f = fopen("bibliotheque.txt", "w"); //ouvre le fichier en ecriture
     if (f) {
         fprintf(f, "%d\n", nbLivres);
         for (int i = 0; i < nbLivres; i++) {
@@ -52,7 +51,7 @@ void Sauvegarder() {
 }
 
 void Charger() {
-    FILE *f = fopen("bibliotheque.txt", "r");
+    FILE *f = fopen("bibliotheque.txt", "r");// ouvre le fichier en lecture
     if (f) {
         char ligne[256];
         if (fgets(ligne, sizeof(ligne), f)) {
@@ -108,7 +107,7 @@ int main() {
         } 
         
         else if (currentScreen == SCREEN_LISTE) {
-            // ÉCRAN LISTE, RECHERCHE & SUPPRESSION
+            // ÉCRAN LISTE RECHERCHE SUPPRESSION
             GuiGroupBox((Rectangle){ 50, 80, 900, 500 }, "Gestion de la liste");
             
             // Barre de recherche
@@ -192,7 +191,7 @@ int main() {
 
             if (GuiButton((Rectangle){ 350, 380, 140, 40 }, "Valider")) {
                 if (nbLivres < 100 && strlen(txtTitre) > 0) {
-                    // Logique simplifiée : le nouvel ID correspond au (nombre actuel de livres + 1)
+                    // Logique simplifiée : le nouvel ID correspond au nombre actuel de livres + 1
                     biblio[nbLivres].id = nbLivres + 1;          
                     
                     strcpy(biblio[nbLivres].titre, txtTitre);    
