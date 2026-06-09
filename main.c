@@ -41,10 +41,10 @@ int currentScreen = SCREEN_MENU;
 void Sauvegarder() {
     FILE *f = fopen("bibliotheque.txt", "w"); //ouvre le fichier en ecriture
     if (f) {
-        fprintf(f, "%d\n", nbLivres);
+        fprintf(f, "%d\n", nbLivres);// ecrit le nombre total de livre 
         for (int i = 0; i < nbLivres; i++) {
             fprintf(f, "%d|%s|%s|%d|%d\n", 
-                    biblio[i].id, biblio[i].titre, biblio[i].auteur, biblio[i].annee, biblio[i].disponible);
+                    biblio[i].id, biblio[i].titre, biblio[i].auteur, biblio[i].annee, biblio[i].disponible); // un livre par ligne
         }
         fclose(f);
     }
@@ -52,18 +52,18 @@ void Sauvegarder() {
 
 void Charger() {
     FILE *f = fopen("bibliotheque.txt", "r");// ouvre le fichier en lecture
-    if (f) {
+    if (f) { //verifie que le fichier existe
         char ligne[256];
         if (fgets(ligne, sizeof(ligne), f)) {
-            sscanf(ligne, "%d", &nbLivres);
+            sscanf(ligne, "%d", &nbLivres);// met le nombre de livre dans la variable nblivres
         }
-        if (nbLivres > 100) nbLivres = 100;
+        if (nbLivres > 100) nbLivres = 100;// verifie qu'il y a moins de 100 livres
 
         for (int i = 0; i < nbLivres; i++) {
             if (fgets(ligne, sizeof(ligne), f)) {
-                ligne[strcspn(ligne, "\n")] = '\0';
+                ligne[strcspn(ligne, "\n")] = '\0';//remplace le /n de la fin recuperer par fgets par un caratère vide
                 sscanf(ligne, "%d|%[^|]|%[^|]|%d|%d", 
-                       &biblio[i].id, biblio[i].titre, biblio[i].auteur, &biblio[i].annee, &biblio[i].disponible);
+                       &biblio[i].id, biblio[i].titre, biblio[i].auteur, &biblio[i].annee, &biblio[i].disponible);//range les données recup du fichier dans des variables
             }
         }
         fclose(f);
