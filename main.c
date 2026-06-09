@@ -133,7 +133,7 @@ int main() {
                     
                     if (yPos < 550) {
                         char statut[20];
-                        strcpy(statut, biblio[i].disponible ? "[Dispo]" : "[Prete]");
+                        strcpy(statut, biblio[i].disponible ? "[Dispo]" : "[Prete]");//
                         
                         // Affichage du livre
                         DrawText(TextFormat("%d - %s par %s (%d) %s", 
